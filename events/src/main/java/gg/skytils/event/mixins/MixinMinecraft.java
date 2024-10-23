@@ -50,6 +50,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 //#endif
 
+//#if MC>12000
+//$$ import net.minecraft.util.ActionResult;
+//$$ import net.minecraft.util.Hand;
+//$$ import net.minecraft.util.hit.BlockHitResult;
+//#endif
+
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
     @Shadow public WorldClient theWorld;
@@ -122,8 +128,21 @@ public class MixinMinecraft {
         }
     }
 
+    //#if MC<12000
     @WrapOperation(method = "rightClickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;onPlayerRightClick(Lnet/minecraft/client/entity/EntityPlayerSP;Lnet/minecraft/client/multiplayer/WorldClient;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/EnumFacing;Lnet/minecraft/util/Vec3;)Z"))
     private boolean onBlockInteract(PlayerControllerMP instance, EntityPlayerSP iblockstate, WorldClient world, ItemStack itemStack, BlockPos pos, EnumFacing enumFacing, Vec3 hitVec, Operation<Boolean> original) {
         return !EventsKt.postCancellableSync(new BlockInteractEvent(itemStack, pos)) && original.call(instance, iblockstate, world, itemStack, pos, enumFacing, hitVec);
     }
+    //#else
+    //$$ @WrapOperation(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;"))
+    //$$ private ActionResult onBlockInteract(ClientPlayerInteractionManager instance, ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, Operation<ActionResult> original) {
+    //$$    ItemStack itemStack = player.getStackInHand(hand);
+    //$$    BlockPos pos = hitResult.getBlockPos();
+    //$$    if (!EventsKt.postCancellableSync(new BlockInteractEvent(itemStack, pos))) {
+    //$$        return original.call(instance, player, hand, hitResult);
+    //$$    } else {
+    //$$        return ActionResult.PASS;
+    //$$    }
+    //$$ }
+    //#endif
 }
