@@ -27,6 +27,7 @@ import gg.skytils.skytilsmod.utils.RenderUtil
 import gg.skytils.skytilsmod.utils.SuperSecretSettings
 import gg.skytils.skytilsmod.utils.Utils
 import gg.skytils.skytilsmod.utils.middleVec
+import gg.skytils.skytilsmod.utils.printDevMessage
 import net.minecraft.block.BlockButtonStone
 import net.minecraft.client.entity.EntityOtherPlayerMP
 import net.minecraft.client.renderer.GlStateManager
@@ -60,7 +61,10 @@ object SimonSaysSolver {
                     if (SuperSecretSettings.azooPuzzoo && clickInOrder.size == 3 && clickNeeded == 0 && pos == clickInOrder[1]) {
                         clickNeeded += 2
                     } else if (clickInOrder[clickNeeded] != pos) {
-                        if (Skytils.config.blockIncorrectTerminalClicks) event.isCanceled = true
+                        if (Skytils.config.blockIncorrectTerminalClicks) {
+                            printDevMessage("Prevented click on $pos", "simon")
+                            event.isCanceled = true
+                        }
                     } else {
                         clickNeeded++
                     }
@@ -73,7 +77,7 @@ object SimonSaysSolver {
                         val hitPos = rayCast.blockPos ?: return
                         if (hitPos.x in 110..111 && hitPos.y in 120..123 && hitPos.z in 92..95) {
                             clickNeeded++
-                            //UChat.chat("${Skytils.prefix} Registered teammate click on Simon Says. (Report on Discord if wrong.)")
+                            printDevMessage("Registered teammate click on Simon Says.", "simon")
                         }
                     }
                 }
@@ -89,15 +93,15 @@ object SimonSaysSolver {
         if (Utils.inDungeons && Skytils.config.simonSaysSolver && TerminalFeatures.isInPhase3()) {
             if ((pos.y in 120..123) && pos.z in 92..95) {
                 if (pos.x == 111) {
-                    //println("Block at $pos changed to ${state.block.localizedName} from ${old.block.localizedName}")
+                    printDevMessage("Block at $pos changed to ${state.block.localizedName} from ${old.block.localizedName}", "simon")
                     if (state.block === Blocks.sea_lantern) {
                         if (!clickInOrder.contains(pos)) {
                             clickInOrder.add(pos)
-                        }
+                        } else printDevMessage("Duplicate block at $pos", "simon")
                     }
                 } else if (pos.x == 110) {
                     if (state.block === Blocks.air) {
-                        //println("Buttons on simon says were removed!")
+                        printDevMessage("Buttons on simon says were removed!", "simon")
                         clickNeeded = 0
                         clickInOrder.clear()
                     } /*else if (state.block === Blocks.stone_button) {
@@ -110,7 +114,7 @@ object SimonSaysSolver {
                     }*/
                 }
             } else if ((pos == startBtn && state.block === Blocks.stone_button && state.getValue(BlockButtonStone.POWERED)) || Funny.ticks == 180) {
-                //println("Simon says was started")
+                printDevMessage("Simon says was started", "simon")
                 clickInOrder.clear()
                 clickNeeded = 0
             }
