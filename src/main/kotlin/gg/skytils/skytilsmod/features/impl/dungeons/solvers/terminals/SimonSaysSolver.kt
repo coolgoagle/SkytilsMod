@@ -94,7 +94,7 @@ object SimonSaysSolver {
             if ((pos.y in 120..123) && pos.z in 92..95) {
                 if (pos.x == 111) {
                     printDevMessage("Block at $pos changed to ${state.block.localizedName} from ${old.block.localizedName}", "simon")
-                    if (state.block === Blocks.sea_lantern) {
+                    if (state.block === Blocks.obsidian && old.block === Blocks.sea_lantern) {
                         if (!clickInOrder.contains(pos)) {
                             clickInOrder.add(pos)
                         } else printDevMessage("Duplicate block at $pos", "simon")
