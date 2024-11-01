@@ -52,7 +52,7 @@ public class MixinGuiScreen {
         }
     }
 
-    @WrapOperation(method = "handleInput", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;next()Z"), remap = false)
+    @WrapOperation(method = "handleInput", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;next()Z"))
     public boolean handleKeyboardInput(Operation<Boolean> original) {
         while (Keyboard.next()) {
             if (EventsKt.postCancellableSync(new ScreenKeyInputEvent(screen, Keyboard.getEventKey()))) {
@@ -63,7 +63,7 @@ public class MixinGuiScreen {
         return false;
     }
 
-    @WrapOperation(method = "handleInput", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"), remap = false)
+    @WrapOperation(method = "handleInput", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"))
     public boolean handleMouseInput(Operation<Boolean> original) {
         Minecraft mc = Minecraft.getMinecraft();
         while (Mouse.next()) {
