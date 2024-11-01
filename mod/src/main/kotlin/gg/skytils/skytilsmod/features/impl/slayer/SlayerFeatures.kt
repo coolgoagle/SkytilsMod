@@ -345,7 +345,7 @@ object SlayerFeatures : EventSubscriber, CoroutineScope {
                     }
                 }
             } else if (packet.entityId == (slayer as? DemonlordSlayer)?.entity?.entityId &&
-                (((packet.func_149376_c().find { it.dataValueId == 0 }
+                (((packet.func_149376_c()?.find { it.dataValueId == 0 }
                     ?: return).`object` as Byte).toInt() and 0x20) == 0 &&
                 slayer?.entity?.isInvisible == true
             ) {
