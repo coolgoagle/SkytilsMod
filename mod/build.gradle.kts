@@ -102,7 +102,7 @@ dependencies {
     if (platform.isForge) {
         shadowMe("gg.essential:loader-launchwrapper:1.2.2")
     } else {
-        runtimeOnly("gg.essential:loader-fabric:1.2.3")
+        include(modRuntimeOnly("gg.essential:loader-fabric:1.2.3")!!)
         modImplementation("net.fabricmc.fabric-api:fabric-api:0.99.4+1.20.6")
     }
     modCompileOnly("gg.essential:essential-${if (!isLegacyFabric) platform.toString() else "${platform.mcVersionStr}-forge"}:16425+g3a090c5c88") {
