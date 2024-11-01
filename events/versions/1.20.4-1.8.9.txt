@@ -1,4 +1,4 @@
-net.minecraft.entity.boss.BossBar net.minecraft.class_0_1876
+net.minecraft.entity.boss.BossBar net.minecraft.entity.boss.BossEntity
 
 # Should be net.minecraft.state.State<Block, BlockState>
 net.minecraft.block.AbstractBlock$AbstractBlockState net.minecraft.class_0_378
