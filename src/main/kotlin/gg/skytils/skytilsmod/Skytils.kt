@@ -564,8 +564,6 @@ class Skytils {
         }
         if (!Utils.inSkyblock && Utils.isOnHypixel) {
             Utils.skyblock = true
-            printDevMessage("score ${event.packet.func_149370_d()}", "utils")
-            printDevMessage("sb ${Utils.inSkyblock}", "utils")
         }
         if (event.packet is S1CPacketEntityMetadata && mc.thePlayer != null) {
             val nameObj = event.packet.func_149376_c()?.find { it.dataValueId == 2 } ?: return
